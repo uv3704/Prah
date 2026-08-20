@@ -1,12 +1,15 @@
 name: Auto commit
 
 on:
-  push:
-    branches:
-      - master
   schedule:
-    - cron: "0 0,6,12,18 * * *" # Runs 4 times a day (every 6 hours)
-  workflow_dispatch: # Allows manual trigger from GitHub Actions tab
+    # Runs daily at 02:00 UTC (07:30 AM IST)
+    - cron: "0 2 * * *"
+  workflow_dispatch:
+    inputs:
+      commits:
+        description: "Number of commits to generate (leave 0 for random 4-10)"
+        required: false
+        default: "0"
 
 permissions:
   contents: write
@@ -20,32 +23,48 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Modify last update
-        run: |
-          d=$(date -u '+%Y-%m-%dT%H:%M:%SZ')
-          echo "$d" > LAST_UPDATED
-
-      - name: Commit and push changes
+      - name: Generate Random Commits
         run: |
           git config --local user.email "yuvisinghrathore678678@gmail.com"
           git config --local user.name "uv3704"
-          git add LAST_UPDATED
 
-          arr=(
+          # Determine commit count: user input or random between 4 and 10
+          INPUT_COMMITS="${{ github.event.inputs.commits }}"
+          if [ -n "$INPUT_COMMITS" ] && [ "$INPUT_COMMITS" -gt 0 ] 2>/dev/null; then
+            NUM_COMMITS=$INPUT_COMMITS
+          else
+            # Random number between 4 and 10 inclusive
+            NUM_COMMITS=$(( (RANDOM % 7) + 4 ))
+          fi
+
+          echo "🚀 Creating $NUM_COMMITS commits for today's activity..."
+
+          messages=(
             "chore(bot): 🚀 auto commit"
             "chore(bot): 🌳 keep the streak alive"
             "chore(bot): 🤖 automated update"
             "chore(bot): 🟩 green garden commit"
             "chore(bot): ⚡ daily activity tick"
-            "chore(bot): 🌟 auto commit update"
+            "chore(bot): 🌟 activity bump"
             "chore(bot): 📈 contribution tracker"
             "chore(bot): 💻 continuous commits"
-            "chore(bot): 👻 ghost commit"
             "chore(bot): 🥑 healthy github streak"
+            "chore(bot): ✨ daily progress update"
+            "chore(bot): 📦 maintain activity logs"
+            "chore(bot): 🎯 consistency is key"
           )
 
-          rand=$(( RANDOM % ${#arr[@]} ))
-          commit_message="${arr[$rand]}"
+          for i in $(seq 1 $NUM_COMMITS); do
+            timestamp=$(date -u '+%Y-%m-%dT%H:%M:%SZ')
+            echo "$timestamp - commit $i of $NUM_COMMITS - token:$RANDOM" > LAST_UPDATED
+            
+            rand_idx=$(( RANDOM % ${#messages[@]} ))
+            msg="${messages[$rand_idx]}"
+            
+            git add LAST_UPDATED
+            git commit -m "$msg"
+            sleep 1
+          done
 
-          git commit -m "$commit_message" || echo "No changes to commit"
+          echo "Pushing $NUM_COMMITS commits to master..."
           git push origin master

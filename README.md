@@ -1,6 +1,6 @@
 # Auto Commit Bot 🌳
 
-Keep your GitHub activity graph green with automated commits powered by [GitHub Actions](https://github.com/features/actions).
+Keep your GitHub activity graph green with **4 to 10 randomized automated contributions daily**, powered by [GitHub Actions](https://github.com/features/actions).
 
 [![Auto commit](https://github.com/uv3704/auto-commit-test/actions/workflows/autocommit.yml/badge.svg)](https://github.com/uv3704/auto-commit-test/actions/workflows/autocommit.yml)
 
@@ -8,17 +8,13 @@ Keep your GitHub activity graph green with automated commits powered by [GitHub 
 
 ## How It Works
 
-1. A GitHub Actions workflow runs on a scheduled cron job (or manually via `workflow_dispatch`).
-2. It updates the `LAST_UPDATED` file with the latest UTC timestamp.
-3. It commits the changes under your configured GitHub user email/name and pushes them back to `master`.
-4. Your GitHub contribution graph turns green! 🟩
+1. **Scheduled Daily**: A GitHub Actions workflow runs every day at `02:00 UTC` (`07:30 AM IST`).
+2. **Random Batching**: On every run, it randomly picks a number of commits between **4 and 10**.
+3. **Unique Updates**: Loops through the batch, updating [`LAST_UPDATED`](LAST_UPDATED) with unique timestamps and varied commit messages.
+4. **Push & Profile Greenery**: Pushes the commits to `master` with your verified email, turning your GitHub contribution graph green with natural variations in daily activity!
 
-## Configuration
+## Manual Trigger
 
-- **Schedule Frequency**: Edit the cron expression in [`.github/workflows/autocommit.yml`](.github/workflows/autocommit.yml#L8).
-  - Every 6 hours (default): `"0 0,6,12,18 * * *"`
-  - Every hour: `"0 * * * *"`
-  - Daily at midnight UTC: `"0 0 * * *"`
-- **Author Information**: Ensure `user.email` in `autocommit.yml` matches your primary GitHub account email so commits are counted towards your stats.
-- **Workflow Permissions**: In GitHub repository settings: **Settings** -> **Actions** -> **General** -> **Workflow permissions** -> **Read and write permissions**.
+You can also trigger it manually at any time under **Actions** -> **Auto commit** -> **Run workflow**, where you can optionally specify an exact number of commits to generate (or leave as `0` for random 4–10).
+
 
