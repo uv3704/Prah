@@ -1,46 +1,24 @@
-# auto-commit
+# Auto Commit Bot 🌳
 
-🌳 Making green your Github stats, powered by [Github Actions](https://github.com/features/actions)
+Keep your GitHub activity graph green with automated commits powered by [GitHub Actions](https://github.com/features/actions).
 
-[![Auto commit](https://github.com/mazipan/auto-commit/workflows/Auto%20commit/badge.svg)](https://github.com/mazipan/auto-commit/actions?query=workflow%3A%22Auto+commit%22)
+[![Auto commit](https://github.com/uv3704/auto-commit-test/actions/workflows/autocommit.yml/badge.svg)](https://github.com/uv3704/auto-commit-test/actions/workflows/autocommit.yml)
 
-![Mazipan's Github Stats](https://ghchart.rshah.org/mazipan)
+![uv3704's GitHub Stats](https://ghchart.rshah.org/uv3704)
 
-## Make it your own
+## How It Works
 
-- Create your own repo with click "**Use this template**" button (⚠️ forked repo will not work)
+1. A GitHub Actions workflow runs on a scheduled cron job (or manually via `workflow_dispatch`).
+2. It updates the `LAST_UPDATED` file with the latest UTC timestamp.
+3. It commits the changes under your configured GitHub user email/name and pushes them back to `master`.
+4. Your GitHub contribution graph turns green! 🟩
 
-Or just do in the manual way:
+## Configuration
 
-- ✅ Create your own repo
-- ✅ Copy file `.github/workflows/autocommit.yml` and `LAST_UPDATED` to your repo
-- ✅ You have to configure your repository. Go to: **Settings** -> **Action** -> **General** -> **Workflow permissions** and choose **"Read and write permissions"**
-- ✅ Change the `email` and `name` information on file [autocommit.yml, line 29 and 30](https://github.com/mazipan/auto-commit/blob/master/.github/workflows/autocommit.yml#L29)
-- ✅ Change the scheduling time on file [autocommit.yml, line 10](https://github.com/mazipan/auto-commit/blob/master/.github/workflows/autocommit.yml#L10). You can use [crontab.guru](https://crontab.guru/) if you are not familiar with the cron schedule string. For first time, you can try to run it in every hour with string `1 * * * *` .
-- ✅ Consider to support me, at least click the 🌟 button
-
-## Article (in Bahasa Indonesia)
-
-- https://mazipan.space/membuat-commit-otomatis-ke-github/
-
-## Repo using this auto-commit
-
-- You can add your repo here
-
-
-## Credits
-
-- [Github Actions](https://github.com/features/actions)
-- [ad-m/github-push-action](https://github.com/ad-m/github-push-action)
-
-## Consider to Support
-
-- 👉 🇮🇩 [Trakteer](https://trakteer.id/mazipan?utm_source=github)
-- 👉 🌍 [BuyMeACoffe](https://www.buymeacoffee.com/mazipan?utm_source=github)
-- 👉 🌍 [Paypal](https://www.paypal.me/mazipan?utm_source=github)
-- 👉 🌍 [Ko-Fi](https://ko-fi.com/mazipan)
-
----
-
-© 2020 Crafted by Irfan Maulana
+- **Schedule Frequency**: Edit the cron expression in [`.github/workflows/autocommit.yml`](.github/workflows/autocommit.yml#L8).
+  - Every 6 hours (default): `"0 0,6,12,18 * * *"`
+  - Every hour: `"0 * * * *"`
+  - Daily at midnight UTC: `"0 0 * * *"`
+- **Author Information**: Ensure `user.email` in `autocommit.yml` matches your primary GitHub account email so commits are counted towards your stats.
+- **Workflow Permissions**: In GitHub repository settings: **Settings** -> **Actions** -> **General** -> **Workflow permissions** -> **Read and write permissions**.
 
